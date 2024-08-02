@@ -4,14 +4,23 @@ import { pool } from "./db/index.js";
 
 export async function getArtists() {
   // Query the database and return all resource ones
+  const queryText = "SELECT * from artists";
+  const result = await pool.query(queryText);
+  return result.rows;
 }
 
 export async function getArtistsById(id) {
   // Query the database and return the resource with a matching id or null
+  const queryText = "SELECT * from artists WHERE id = $1";
+  const result = await pool.query(queryText, [id]);
+  return result.rows[0] || null;
 }
 
-export async function createArtists(resource) {
+export async function createArtists(artist) {
   // Query the database to create an resource and return the newly created resource
+  const queryText = "INSERT INTO artists (name) VALUES ($1) RETURNING *"
+  const result = await pool.query(queryText, [artist.name])
+  return result.rows[0]
 }
 
 export async function updateArtistsById(id, updates) {
