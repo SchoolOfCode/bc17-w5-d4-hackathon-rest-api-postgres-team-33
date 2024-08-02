@@ -55,6 +55,7 @@ app.get("/artists/", async function (req, res) { // insert try/catch for error h
   }
 });
 
+
 // Endpoint to retrieve a <artists> by id
 app.get("/artists/:id", async function (req, res) 
 {
@@ -68,6 +69,7 @@ app.get("/artists/:id", async function (req, res)
   res.status(200).json({ status: "success", data: artists });
 });
 
+
 // Endpoint to create a new <artists>
 app.post("/artists/", async function (req, res) {
   const data = req.body;
@@ -80,9 +82,20 @@ app.post("/artists/", async function (req, res) {
   res.status(200).json({ status: "success", data: newArtist });
 });
 
+
 // Endpoint to update a specific <artists> by id
 app.patch("/artists/:id", async function (req, res) {
+  const data = req.body;
+  const id = req.params.id;
+  const updatedArtist = await updateArtistsById(id, data);
+  if (!id || !data) {
+    return res
+      .status(404)
+      .json({ status: "fail", data: { msg: "No artist update submitted" } });
+  }
+  res.status(200).json({ status: "success", data: updatedArtist });
 });
+
 
 // Endpoint to delete a specific <artists> by id
 app.delete("/artists/:id", async function (req, res) {
@@ -109,6 +122,7 @@ app.get("/albums/", async function (req, res)  {
   }
   });
   
+
   // Endpoint to retrieve a <albums> by id
   app.get("/albums/:id", async function (req, res)
     {
@@ -122,6 +136,7 @@ app.get("/albums/", async function (req, res)  {
       res.status(200).json({ status: "success", data: albums });
     });
   
+
   // Endpoint to create a new <albums>
   app.post("/albums/", async function (req, res) {
     const data = req.body;
@@ -134,10 +149,12 @@ app.get("/albums/", async function (req, res)  {
     res.status(200).json({ status: "success", data: newAlbum });
   });
   
+
   // Endpoint to update a specific <albums> by id
   app.patch("/albums/:id", async function (req, res) {
   });
   
+
   // Endpoint to delete a specific <albums> by id
   app.delete("/albums/:id", async function (req, res) {
   });
