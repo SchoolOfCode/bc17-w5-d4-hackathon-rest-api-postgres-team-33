@@ -9,12 +9,14 @@ export async function getAlbums() {
   return result.rows;
 }
 
+
 export async function getAlbumsById(id) {
   // Query the database and return the resource with a matching id or null
   const queryText = "SELECT * FROM albums WHERE id = $1";
   const result = await pool.query(queryText, [id]);
   return result.rows[0] || null;
 }
+
 
 export async function createAlbums(album) {
   // Query the database to create an resource and return the newly created resource
@@ -23,9 +25,15 @@ export async function createAlbums(album) {
   return result.rows[0]
 }
 
+
 export async function updateAlbumsById(id, updates) {
   // Query the database to update the resource and return the newly updated resource or null
+  const {title, published_date, artist_id} = updates;
+  const queryText = "UPDATE albums SET title = $2, published_date = $3, artist_id = $4 WHERE id = $1 RETURNING *";
+  const result = await pool.query(queryText, [id, album.title, album.published_date, album.artist_id]);
+  return result.rows[0];
 }
+
 
 export async function deleteAlbumsById(id) {
   // Query the database to delete the resource and return the deleted resource or null

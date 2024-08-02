@@ -28,7 +28,7 @@ export async function createArtists(artist) {
 
 export async function updateArtistsById(id, updates) {
   // Query the database to update the resource and return the newly updated resource or null
-  const queryText = "UPDATE artists SET name = $2 WHERE id = $1";
+  const queryText = "UPDATE artists SET name = $2 WHERE id = $1 RETURNING *";
   const result = await pool.query(queryText, [id, updates]);
   return result.rows[0];
 }

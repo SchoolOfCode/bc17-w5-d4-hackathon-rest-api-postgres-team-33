@@ -152,6 +152,15 @@ app.get("/albums/", async function (req, res)  {
 
   // Endpoint to update a specific <albums> by id
   app.patch("/albums/:id", async function (req, res) {
+    const data = req.body;
+    const id = req.params.id;
+    const updatedAlbums = await updateAlbumsById(id, data);
+    if (!id || !data) {
+      return res
+        .status(404)
+        .json({ status: "fail", data: { msg: "No album update submitted" } });
+    }
+    res.status(200).json({ status: "success", data: updatedAlbums });
   });
   
 
